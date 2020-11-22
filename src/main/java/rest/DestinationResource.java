@@ -1,6 +1,5 @@
 package rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class DestinationResource {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final ExecutorService es = Executors.newCachedThreadPool();
-    final ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     @GET

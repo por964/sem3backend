@@ -1,6 +1,5 @@
 package jokefetcher;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import dtos.DestinationDTO;
 import entities.Destination;
@@ -24,7 +23,7 @@ import com.google.gson.reflect.TypeToken;
 public class DestinationFetcher {
     
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/eesti?fields=name;alpha3Code;capital";
-    final ObjectMapper objectMapper = new ObjectMapper();
+
     
     
     public static String getDestination (ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
