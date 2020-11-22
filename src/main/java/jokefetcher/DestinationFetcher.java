@@ -22,20 +22,18 @@ import com.google.gson.reflect.TypeToken;
  */
 public class DestinationFetcher {
     
-    final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/eesti?fields=name;alpha3Code;capital";
+    final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
 
     
     
-    public static String getDestination (ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public static String getDestination (String country, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
    
     Callable<DestinationDTO> destTask = new Callable<DestinationDTO>(){
         @Override
         public DestinationDTO call() throws IOException {
-            String dest = HttpUtils.fetchData(DESTINATION_SERVER);
+            String dest = HttpUtils.fetchData(DESTINATION_SERVER+country+"?fields=name;alpha3Code;capital");
             Type listCity = new TypeToken<ArrayList<DestinationDTO>>(){}.getType();
             ArrayList<DestinationDTO> cityArray = gson.fromJson(dest, listCity); 
-
-
             
             return cityArray.get(0);
         }

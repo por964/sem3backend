@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import jokefetcher.DestinationFetcher;
@@ -26,10 +27,10 @@ public class DestinationResource {
 
 
     @GET
+    @Path("/{country}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getDestination() throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        
-        String result = DestinationFetcher.getDestination(es, gson);
+    public String getDestination(@PathParam("country") String country) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        String result = DestinationFetcher.getDestination(country, es, gson);
         return result;
     }
 
