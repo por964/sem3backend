@@ -28,7 +28,7 @@ public class DestinationFetcher {
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
     final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=";
-    final static String COVID_SERVER = "https://covid19-api.org/api/status/dk";
+    final static String COVID_SERVER = "https://covid19-api.org/api/status/";
     
     static String currencyCode;
     static String countryCode;
@@ -56,7 +56,7 @@ public class DestinationFetcher {
 
         ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
         
-        CovidInfoDTO covDTO = getCovidInfo(threadPool,gson);
+        CovidInfoDTO covDTO = getCovidInfo(countryCode, threadPool,gson);
         
         CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covDTO); 
         
@@ -86,13 +86,13 @@ public class DestinationFetcher {
         return result;
     }
     
-    public static CovidInfoDTO getCovidInfo(ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public static CovidInfoDTO getCovidInfo(String countryAlpha, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         Callable<CovidInfoDTO> destTask = new Callable<CovidInfoDTO>() {
             @Override
             public CovidInfoDTO call() throws IOException {
 
-                String rates = HttpUtils.fetchData(COVID_SERVER);
+                String rates = HttpUtils.fetchData(COVID_SERVER+countryAlpha);
 
                 CovidInfoDTO covidDTO = gson.fromJson(rates, CovidInfoDTO.class);
 
