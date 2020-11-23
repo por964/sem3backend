@@ -16,6 +16,7 @@ public class DestinationDTO {
     private List<DestinationDTO> destinations;
     private List<Currencies> currencies;
     private Long population;
+    private double infectionRate;
 
     public DestinationDTO() {
     }
@@ -75,6 +76,15 @@ public class DestinationDTO {
     public void setPopulation(Long population) {
         this.population = population;
     }
+
+    public double getInfectionRate() {
+        return infectionRate;
+    }
+
+    public void setInfectionRate(double infectionRate) {
+        this.infectionRate = infectionRate;
+    }
+    
     
     
     

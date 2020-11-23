@@ -26,6 +26,7 @@ public class CombinedDTO {
     private Long cases;
     private Long deaths;
     private Long recovered;
+    private double infectionRate;
     
     
     
@@ -35,6 +36,7 @@ public class CombinedDTO {
         this.alpha2Code = destinationDTO.getAlpha2Code();
         this.capital = destinationDTO.getCapital();
         this.population = destinationDTO.getPopulation();
+        this.infectionRate = destinationDTO.getInfectionRate();
         this.destinations = destinationDTO.getDestinations();
         this.currencies = destinationDTO.getCurrencies();
         this.rates = exchangeRatesDTO.getRates();
@@ -42,6 +44,7 @@ public class CombinedDTO {
         this.cases = covidinfoDTO.getCases();
         this.deaths = covidinfoDTO.getDeaths();
         this.recovered = covidinfoDTO.getRecovered();
+        
        
         
     }
@@ -136,6 +139,24 @@ public class CombinedDTO {
     public void setRecovered(Long recovered) {
         this.recovered = recovered;
     }
+
+    public String getLast_update() {
+        return last_update;
+    }
+
+    public void setLast_update(String last_update) {
+        this.last_update = last_update;
+    }
+
+    public double getInfectionRate() {
+        return infectionRate;
+    }
+
+    public void setInfectionRate(Long infectionRate) {
+        this.infectionRate = infectionRate;
+    }
+    
+    
     
     
     

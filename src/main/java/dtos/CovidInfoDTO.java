@@ -11,7 +11,8 @@ public class CovidInfoDTO {
     private Long deaths;
     private Long recovered;
 
-    public CovidInfoDTO(String country, String lastUpdate, Long cases, Long deaths, Long recovered) {
+
+    public CovidInfoDTO(String country, String last_update, Long cases, Long deaths, Long recovered) {
         this.country = country;
         this.last_update = last_update;
         this.cases = cases;
@@ -62,9 +63,13 @@ public class CovidInfoDTO {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    
-    
-    
-    
+
+    public String getLast_update() {
+        return last_update;
+    }
+
+    public void setLast_update(String last_update) {
+        this.last_update = last_update;
+    }
+
 }

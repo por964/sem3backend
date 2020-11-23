@@ -32,6 +32,11 @@ public class DestinationFetcher {
     
     static String currencyCode;
     static String countryCode;
+    
+    public static double calculateInfectionRate(double population, double cases) {
+        double rate = (cases/population)*100;
+        return Math.round(rate * 100.0) / 100.0;
+    }
 
     public static String getDestination(String country, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         
@@ -57,6 +62,11 @@ public class DestinationFetcher {
         ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
         
         CovidInfoDTO covidDTO = getCovidInfo(countryCode, threadPool,gson);
+        
+        double cases = (double)covidDTO.getCases();
+        double population = (double)destinationDTO.getPopulation();
+        
+        destinationDTO.setInfectionRate(calculateInfectionRate(population, cases));
         
         CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covidDTO); 
         
