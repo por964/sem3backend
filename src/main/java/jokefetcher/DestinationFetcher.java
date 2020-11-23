@@ -15,14 +15,17 @@ import java.util.concurrent.TimeoutException;
 import utils.HttpUtils;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
+import dtos.ExhangeRatesDTO;
 
 /**
  *
  * @author claes
  */
+
 public class DestinationFetcher {
     
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
+    final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD";
 
     
     
@@ -31,7 +34,7 @@ public class DestinationFetcher {
     Callable<DestinationDTO> destTask = new Callable<DestinationDTO>(){
         @Override
         public DestinationDTO call() throws IOException {
-            String dest = HttpUtils.fetchData(DESTINATION_SERVER+country+"?fields=name;alpha3Code;capital");
+            String dest = HttpUtils.fetchData(DESTINATION_SERVER + country);
             Type listCity = new TypeToken<ArrayList<DestinationDTO>>(){}.getType();
             ArrayList<DestinationDTO> cityArray = gson.fromJson(dest, listCity); 
             
@@ -47,6 +50,28 @@ public class DestinationFetcher {
     
     String destinationJson = gson.toJson(destination);
     return destinationJson;
-    }
+    }  
     
+    public static String getRates(ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+   
+    Callable<ExhangeRatesDTO> destTask = new Callable<ExhangeRatesDTO>(){
+        @Override
+        public ExhangeRatesDTO call() throws IOException {
+            String rates = HttpUtils.fetchData(RATES_SERVER);
+            Type list = new TypeToken<ArrayList<ExhangeRatesDTO>>(){}.getType();
+            ArrayList<ExhangeRatesDTO> array = gson.fromJson(rates, list); 
+            
+            return array.get(0);
+        }
+    };   
+    
+    Future<ExhangeRatesDTO> future = threadPool.submit(destTask);
+    
+    ExhangeRatesDTO result = future.get();
+      
+    
+    
+    String resultJson = gson.toJson(result);
+    return resultJson;
+    }  
 }

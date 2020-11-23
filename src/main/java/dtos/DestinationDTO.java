@@ -1,25 +1,29 @@
 package dtos;
 
+import entities.Currencies;
 import java.util.List;
 
 /**
  *
  * @author claes
  */
+
 public class DestinationDTO {
     
     private String name;
-    private String alpha3Code;
+    private String alpha2Code;
     private String capital;
     private List<DestinationDTO> destinations;
+    private List<Currencies> currencies;
 
     public DestinationDTO() {
     }
 
-    public DestinationDTO(String name, String alpha3Code, String capital) {
+    public DestinationDTO(String name, String alpha2Code, String capital, List<Currencies> currencies) {
         this.name = name;
-        this.alpha3Code = alpha3Code;
+        this.alpha2Code = alpha2Code;
         this.capital = capital;
+        this.currencies = currencies;
     }
 
     public String getName() {
@@ -30,12 +34,12 @@ public class DestinationDTO {
         this.name = name;
     }
 
-    public String getAlpha3Code() {
-        return alpha3Code;
+    public String getAlpha2Code() {
+        return alpha2Code;
     }
 
-    public void setAlpha3Code(String alpha3Code) {
-        this.alpha3Code = alpha3Code;
+    public void setAlpha2Code(String alpha2Code) {
+        this.alpha2Code = alpha2Code;
     }
 
     public String getCapital() {
@@ -54,13 +58,11 @@ public class DestinationDTO {
         this.destinations = destinations;
     }
     
+    public List<Currencies> getCurrencies() {
+        return currencies;
+    }
     
-    
-    
-
-
-
-    
-    
-    
+    public void setCurrencies(List<Currencies> currencies) {
+        this.currencies = currencies;
+    }
 }
