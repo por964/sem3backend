@@ -13,15 +13,15 @@ import entities.ExchangeRates;
  * @author Jonas
  */
 
-public class ExhangeRatesDTO {
+public class ExchangeRatesDTO {
     
     private Currency rates;
 
-    public ExhangeRatesDTO(Currency rates) {
+    public ExchangeRatesDTO(Currency rates) {
         this.rates = rates;
     }
     
-    public ExhangeRatesDTO() {
+    public ExchangeRatesDTO() {
     }
     
     public Currency getRates() {

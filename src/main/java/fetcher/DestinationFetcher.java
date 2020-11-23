@@ -1,4 +1,4 @@
-package jokefetcher;
+package fetcher;
 
 import com.google.gson.Gson;
 import dtos.DestinationDTO;
@@ -15,20 +15,23 @@ import java.util.concurrent.TimeoutException;
 import utils.HttpUtils;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
-import dtos.ExhangeRatesDTO;
+import dtos.CombinedDTO;
+import dtos.ExchangeRatesDTO;
 
 /**
  *
  * @author claes
  */
 
-public class DestinationFetcherBackup {
+public class DestinationFetcher {
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
-    final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR";
+    final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=";
+    
+    static String currencyCode;
 
     public static String getDestination(String country, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-
+        
         Callable<DestinationDTO> destTask = new Callable<DestinationDTO>() {
             @Override
             public DestinationDTO call() throws IOException {
@@ -36,38 +39,44 @@ public class DestinationFetcherBackup {
                 Type listCity = new TypeToken<ArrayList<DestinationDTO>>() {
                 }.getType();
                 ArrayList<DestinationDTO> cityArray = gson.fromJson(dest, listCity);
-
+                
+                currencyCode = cityArray.get(0).getCurrencies().get(0).getCode();
+                
                 return cityArray.get(0);
             }
         };
 
         Future<DestinationDTO> futureDestination = threadPool.submit(destTask);
 
-        DestinationDTO destination = futureDestination.get();
+        DestinationDTO destinationDTO = futureDestination.get();
 
-        String destinationJson = gson.toJson(destination);
-        return destinationJson;
+        ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
+        
+        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO); 
+        
+        String combinedDTOString = gson.toJson(combinedDTO);
+        
+        return combinedDTOString;
     }
 
-    public static String getRates(ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public static ExchangeRatesDTO getRates(String code, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
-        Callable<ExhangeRatesDTO> destTask = new Callable<ExhangeRatesDTO>() {
+        Callable<ExchangeRatesDTO> destTask = new Callable<ExchangeRatesDTO>() {
             @Override
-            public ExhangeRatesDTO call() throws IOException {
+            public ExchangeRatesDTO call() throws IOException {
 
-                String rates = HttpUtils.fetchData(RATES_SERVER);
+                String rates = HttpUtils.fetchData(RATES_SERVER+code);
 
-                ExhangeRatesDTO exchangeRatesDTO = gson.fromJson(rates, ExhangeRatesDTO.class);
+                ExchangeRatesDTO exchangeRatesDTO = gson.fromJson(rates, ExchangeRatesDTO.class);
 
                 return exchangeRatesDTO;
             }
         };
 
-        Future<ExhangeRatesDTO> future = threadPool.submit(destTask);
+        Future<ExchangeRatesDTO> future = threadPool.submit(destTask);
 
-        ExhangeRatesDTO result = future.get();
+        ExchangeRatesDTO result = future.get();
 
-        String resultJson = gson.toJson(result);
-        return resultJson;
+        return result;
     }
 }
