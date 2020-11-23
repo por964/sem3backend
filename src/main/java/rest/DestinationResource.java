@@ -39,10 +39,11 @@ public class DestinationResource {
     @Path("/rates")
     @Produces(MediaType.APPLICATION_JSON)
     public String getRates() throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        //String rates = DestinationFetcher.getRates(es, gson);
-        //return rates;
+        String rates = DestinationFetcher.getRates(es, gson);
+        return rates;
         
-        String URL = "https://api.exchangeratesapi.io/latest?base=USD";
+        /*
+        String URL = "https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR";
         
         String rates = HttpUtils.fetchData(URL);
         ExhangeRatesDTO exchangeRatesDTO = gson.fromJson(rates, ExhangeRatesDTO.class);
@@ -50,5 +51,6 @@ public class DestinationResource {
        String exchangeRates = gson.toJson(exchangeRatesDTO);
        
        return exchangeRates;
+*/
     }
 }

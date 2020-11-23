@@ -5,8 +5,8 @@
  */
 package dtos;
 
+import entities.Currency;
 import entities.ExchangeRates;
-import java.util.List;
 
 /**
  *
@@ -15,29 +15,20 @@ import java.util.List;
 
 public class ExhangeRatesDTO {
     
-    private List<ExchangeRates> rates;
-    private List<ExhangeRatesDTO> ExchangeRates;
+    private Currency rates;
 
-    public ExhangeRatesDTO(List<ExchangeRates> rates) {
+    public ExhangeRatesDTO(Currency rates) {
         this.rates = rates;
     }
     
     public ExhangeRatesDTO() {
     }
     
-    public List<ExhangeRatesDTO> getExchangeRates() {
-        return ExchangeRates;
-    }
-
-    public void setExchangeRates(List<ExhangeRatesDTO> ExchangeRates) {
-        this.ExchangeRates = ExchangeRates;
-    }
-    
-    public List<ExchangeRates> getRates() {
+    public Currency getRates() {
         return rates;
     }
 
-    public void setRates(List<ExchangeRates> rates) {
+    public void setRates(Currency rates) {
         this.rates = rates;
     }
             

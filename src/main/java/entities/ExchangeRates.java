@@ -14,21 +14,21 @@ import java.util.List;
 
 public class ExchangeRates {
     
-    private String DKK;
+    private Currency currency;
 
-    public ExchangeRates(String dkk) {
-        this.DKK = dkk;
-    }
-    
     public ExchangeRates() {
     }
-    
-    public String getDKK() {
-        return DKK;
+
+    public ExchangeRates(Currency currency) {
+        this.currency = currency;
     }
 
-    public void setDKK(String DKK) {
-        this.DKK = DKK;
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
 }

@@ -22,7 +22,7 @@ import dtos.ExhangeRatesDTO;
  * @author claes
  */
 
-public class DestinationFetcher {
+public class DestinationFetcherBackup {
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
     final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR";
