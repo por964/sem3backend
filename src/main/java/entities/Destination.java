@@ -9,17 +9,15 @@ public class Destination {
     private String name;
     private String alpha2Code;
     private String capital;
-    private String [] altSpellings;
-    private int population;
+    private Long population;
 
     public Destination() {
     }
 
-    public Destination(String name, String alpha2Code, String capital, String[] altSpellings, int population) {
+    public Destination(String name, String alpha2Code, String capital, Long population) {
         this.name = name;
         this.alpha2Code = alpha2Code;
         this.capital = capital;
-        this.altSpellings = altSpellings;
         this.population = population;
     }
 
@@ -47,21 +45,16 @@ public class Destination {
         this.capital = capital;
     }
 
-    public String[] getAltSpellings() {
-        return altSpellings;
-    }
-
-    public void setAltSpellings(String[] altSpellings) {
-        this.altSpellings = altSpellings;
-    }
-
-    public int getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
+
+    
+
     
     
     

@@ -18,17 +18,32 @@ public class CombinedDTO {
     private String name;
     private String alpha2Code;
     private String capital;
+    private Long population;
     private List<DestinationDTO> destinations;
     private List<Currencies> currencies;
     private Currency rates;
+    private String last_update;
+    private Long cases;
+    private Long deaths;
+    private Long recovered;
+    
+    
+    
 
-    public CombinedDTO(DestinationDTO destinationDTO, ExchangeRatesDTO exchangeRatesDTO) {
+    public CombinedDTO(DestinationDTO destinationDTO, ExchangeRatesDTO exchangeRatesDTO, CovidInfoDTO covidinfoDTO) {
         this.name = destinationDTO.getName();
         this.alpha2Code = destinationDTO.getAlpha2Code();
         this.capital = destinationDTO.getCapital();
+        this.population = destinationDTO.getPopulation();
         this.destinations = destinationDTO.getDestinations();
         this.currencies = destinationDTO.getCurrencies();
         this.rates = exchangeRatesDTO.getRates();
+        this.last_update = covidinfoDTO.getLastUpdate();
+        this.cases = covidinfoDTO.getCases();
+        this.deaths = covidinfoDTO.getDeaths();
+        this.recovered = covidinfoDTO.getRecovered();
+       
+        
     }
 
     public CombinedDTO() {
@@ -81,6 +96,54 @@ public class CombinedDTO {
     public void setRates(Currency rates) {
         this.rates = rates;
     }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    public Long getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(Long deaths) {
+        this.deaths = deaths;
+    }
+
+    public String getLastUpdate() {
+        return last_update;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.last_update = lastUpdate;
+    }
+
+    public Long getCases() {
+        return cases;
+    }
+
+    public void setCases(Long cases) {
+        this.cases = cases;
+    }
+
+    public Long getRecovered() {
+        return recovered;
+    }
+
+    public void setRecovered(Long recovered) {
+        this.recovered = recovered;
+    }
+    
+    
+    
+    
+    
+    
+
+   
 
 
 }

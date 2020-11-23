@@ -15,15 +15,17 @@ public class DestinationDTO {
     private String capital;
     private List<DestinationDTO> destinations;
     private List<Currencies> currencies;
+    private Long population;
 
     public DestinationDTO() {
     }
 
-    public DestinationDTO(String name, String alpha2Code, String capital, List<Currencies> currencies) {
+    public DestinationDTO(String name, String alpha2Code, String capital, Long population, List<Currencies> currencies) {
         this.name = name;
         this.alpha2Code = alpha2Code;
         this.capital = capital;
         this.currencies = currencies;
+        this.population = population;
     }
 
     public String getName() {
@@ -65,4 +67,17 @@ public class DestinationDTO {
     public void setCurrencies(List<Currencies> currencies) {
         this.currencies = currencies;
     }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+    
+    
+    
+    
+    
 }

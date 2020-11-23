@@ -16,6 +16,7 @@ import utils.HttpUtils;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 import dtos.CombinedDTO;
+import dtos.CovidInfoDTO;
 import dtos.ExchangeRatesDTO;
 
 /**
@@ -27,8 +28,10 @@ public class DestinationFetcher {
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
     final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=";
+    final static String COVID_SERVER = "https://covid19-api.org/api/status/dk";
     
     static String currencyCode;
+    static String countryCode;
 
     public static String getDestination(String country, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         
@@ -41,6 +44,7 @@ public class DestinationFetcher {
                 ArrayList<DestinationDTO> cityArray = gson.fromJson(dest, listCity);
                 
                 currencyCode = cityArray.get(0).getCurrencies().get(0).getCode();
+                countryCode = cityArray.get(0).getAlpha2Code();
                 
                 return cityArray.get(0);
             }
@@ -52,13 +56,15 @@ public class DestinationFetcher {
 
         ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
         
-        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO); 
+        CovidInfoDTO covDTO = getCovidInfo(threadPool,gson);
+        
+        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covDTO); 
         
         String combinedDTOString = gson.toJson(combinedDTO);
         
         return combinedDTOString;
     }
-
+    
     public static ExchangeRatesDTO getRates(String code, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         Callable<ExchangeRatesDTO> destTask = new Callable<ExchangeRatesDTO>() {
@@ -76,6 +82,27 @@ public class DestinationFetcher {
         Future<ExchangeRatesDTO> future = threadPool.submit(destTask);
 
         ExchangeRatesDTO result = future.get();
+
+        return result;
+    }
+    
+    public static CovidInfoDTO getCovidInfo(ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+
+        Callable<CovidInfoDTO> destTask = new Callable<CovidInfoDTO>() {
+            @Override
+            public CovidInfoDTO call() throws IOException {
+
+                String rates = HttpUtils.fetchData(COVID_SERVER);
+
+                CovidInfoDTO covidDTO = gson.fromJson(rates, CovidInfoDTO.class);
+
+                return covidDTO;
+            }
+        };
+
+        Future<CovidInfoDTO> future = threadPool.submit(destTask);
+
+        CovidInfoDTO result = future.get();
 
         return result;
     }
