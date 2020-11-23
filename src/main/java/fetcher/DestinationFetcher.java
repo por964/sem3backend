@@ -56,9 +56,9 @@ public class DestinationFetcher {
 
         ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
         
-        CovidInfoDTO covDTO = getCovidInfo(countryCode, threadPool,gson);
+        CovidInfoDTO covidDTO = getCovidInfo(countryCode, threadPool,gson);
         
-        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covDTO); 
+        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covidDTO); 
         
         String combinedDTOString = gson.toJson(combinedDTO);
         
