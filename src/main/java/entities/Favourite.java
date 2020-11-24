@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 
@@ -18,39 +19,54 @@ import javax.persistence.Table;
 public class Favourite implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     
-    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<User> users;
-
-
-
     @Id
-    private String name;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
     
+    private String countryName;
     
+    @ManyToMany
+    private List<User> users;   
+    
+  
     public Favourite() {
     }
 
-    public Favourite(String name) {
-        this.name = name;
+    public Favourite(String countryName) {
+        this.countryName = countryName;
+        this.users = new ArrayList<>();
     }
-    
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
     public List<User> getUsers() {
         return users;
     }
-        
+
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
-    public String getName() {
-        return name;
+    
+    
+    
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
+    
+    
+
+    
 
 
 }

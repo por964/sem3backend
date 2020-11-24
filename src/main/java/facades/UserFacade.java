@@ -88,13 +88,13 @@ public class UserFacade {
         Favourite favourite = new Favourite(country);
         
         user.addFavourite(favourite);
-        //favourite.addUser(user);
+        
       
         em.getTransaction().begin();
-            em.persist(favourite);
+            em.persist(user);
             em.getTransaction().commit();
         
-         return favourite.getName();
+         return favourite.getCountryName();
         } finally {
             em.close();
         }
