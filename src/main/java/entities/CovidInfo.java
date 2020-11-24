@@ -4,6 +4,7 @@ package entities;
  *
  * @author claes
  */
+/*
 public class CovidInfo {
     
     private String country;
@@ -67,3 +68,4 @@ public class CovidInfo {
     
     
 }
+*/

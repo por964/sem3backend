@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.UserInfoDTO;
+import entities.Favourite;
 import entities.User;
 import entities.UserInfo;
 import errorhandling.MissingInputException;
@@ -67,6 +68,33 @@ public class UserFacade {
             em.getTransaction().commit();
         
          return new UserInfoDTO(info.getEmail(),info.getPhone());
+        } finally {
+            em.close();
+        }
+    }
+    
+        public String addFavourite(String country, String userName) throws MissingInputException  {
+        
+        if (country.length() == 0 || (userName.length() == 0)) {
+            throw new MissingInputException("One or both values are missing");
+        }   
+        
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+        
+        User user = em.find(User.class, userName);
+        
+        Favourite favourite = new Favourite(country);
+        
+        user.addFavourite(favourite);
+        //favourite.addUser(user);
+      
+        em.getTransaction().begin();
+            em.persist(favourite);
+            em.getTransaction().commit();
+        
+         return favourite.getName();
         } finally {
             em.close();
         }

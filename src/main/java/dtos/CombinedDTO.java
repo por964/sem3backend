@@ -16,11 +16,10 @@ import java.util.List;
 public class CombinedDTO {
     
     private String name;
-    private String alpha2Code;
     private String capital;
     private Long population;
     private List<DestinationDTO> destinations;
-    private List<Currencies> currencies;
+    private Currencies currencies;
     private Currency rates;
     private String last_update;
     private Long cases;
@@ -33,12 +32,11 @@ public class CombinedDTO {
 
     public CombinedDTO(DestinationDTO destinationDTO, ExchangeRatesDTO exchangeRatesDTO, CovidInfoDTO covidinfoDTO) {
         this.name = destinationDTO.getName();
-        this.alpha2Code = destinationDTO.getAlpha2Code();
         this.capital = destinationDTO.getCapital();
         this.population = destinationDTO.getPopulation();
         this.infectionRate = destinationDTO.getInfectionRate();
         this.destinations = destinationDTO.getDestinations();
-        this.currencies = destinationDTO.getCurrencies();
+        this.currencies = destinationDTO.getCurrencies().get(0);
         this.rates = exchangeRatesDTO.getRates();
         this.last_update = covidinfoDTO.getLastUpdate();
         this.cases = covidinfoDTO.getCases();
@@ -60,14 +58,6 @@ public class CombinedDTO {
         this.name = name;
     }
 
-    public String getAlpha2Code() {
-        return alpha2Code;
-    }
-
-    public void setAlpha2Code(String alpha2Code) {
-        this.alpha2Code = alpha2Code;
-    }
-
     public String getCapital() {
         return capital;
     }
@@ -84,11 +74,11 @@ public class CombinedDTO {
         this.destinations = destinations;
     }
 
-    public List<Currencies> getCurrencies() {
+    public Currencies getCurrencies() {
         return currencies;
     }
 
-    public void setCurrencies(List<Currencies> currencies) {
+    public void setCurrencies(Currencies currencies) {
         this.currencies = currencies;
     }
 

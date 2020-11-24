@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,7 +36,25 @@ public class User implements Serializable {
     @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
+  
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    List<Favourite> favourites;
 
+    public List<Favourite> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<Favourite> favourites) {
+        this.favourites = favourites;
+    }
+    
+        public void addFavourite(Favourite favourite) {
+        if (favourite != null) {
+            this.favourites.add(favourite);
+            favourite.getUsers().add(this);
+        }
+    }
+  
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
       return null;
@@ -59,7 +78,7 @@ public class User implements Serializable {
 
     this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(10));
   }
-
+  
 
   public String getUserName() {
     return userName;
