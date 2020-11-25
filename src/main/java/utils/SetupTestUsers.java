@@ -4,6 +4,7 @@ import entities.Favourite;
 import entities.Role;
 import entities.User;
 import entities.UserInfo;
+import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import facades.UserFacade;
 
@@ -12,7 +13,7 @@ import javax.persistence.EntityManagerFactory;
 
 public class SetupTestUsers {
 
-    public static void main(String[] args) throws MissingInputException {
+    public static void main(String[] args) throws MissingInputException, AlreadyExistsException {
 
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
@@ -30,10 +31,16 @@ public class SetupTestUsers {
         em.getTransaction().commit();
         */
         UserFacade FACADE = UserFacade.getUserFacade(emf);
+        
+        //FACADE.getFavorites("user");
+        
+        
 
-        FACADE.addFavourite("Germany", "user");
-        FACADE.addFavourite("greece", "user");
-        FACADE.addFavourite("ireland", "user");
+        FACADE.addFavourite("belgium", "user");
+        
+        System.out.println(FACADE.getFavorites("user"));
+        //FACADE.addFavourite("greece", "user");
+        //FACADE.addFavourite("ireland", "user");
         
         /*
         User user = new User("user", "test1");

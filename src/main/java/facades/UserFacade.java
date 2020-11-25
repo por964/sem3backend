@@ -4,9 +4,12 @@ import dtos.UserInfoDTO;
 import entities.Favourite;
 import entities.User;
 import entities.UserInfo;
+import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import security.errorhandling.AuthenticationException;
 
 /**
@@ -73,31 +76,53 @@ public class UserFacade {
         }
     }
     
-        public String addFavourite(String country, String userName) throws MissingInputException  {
+    public List<Favourite> getFavorites(String user) {
+        EntityManager em = emf.createEntityManager();
         
-        if (country.length() == 0 || (userName.length() == 0)) {
-            throw new MissingInputException("One or both values are missing");
-        }   
+        TypedQuery<Favourite> query = em.createQuery("select f FROM Favourite f INNER JOIN f.users User WHERE User.userName = :user", Favourite.class);
+        query.setParameter("user", user);
+        List<Favourite> resultList = query.getResultList();
+        return resultList;       
+        
+    }
+    
+        public String addFavourite(String country, String userName) throws MissingInputException, AlreadyExistsException  {
+            
+        String lowerCountry = country.toLowerCase();
         
         EntityManager em = emf.createEntityManager();
         
-        try {
+        if (lowerCountry.length() == 0 || (userName.length() == 0)) {
+            throw new MissingInputException("One or both values are missing");
+        } 
         
-        User user = em.find(User.class, userName);
+        Favourite favourite = new Favourite(lowerCountry);
         
-        Favourite favourite = new Favourite(country);
+        List<Favourite> usersFavorites = getFavorites(userName);
         
-        user.addFavourite(favourite);
+        boolean favoriteExists = usersFavorites.stream().anyMatch(o -> o.getCountryName().equals(lowerCountry));
         
-      
-        em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-        
-         return favourite.getCountryName();
-        } finally {
-            em.close();
+        if (favoriteExists== true) {
+            System.out.println(getFavorites(userName));
+            throw new AlreadyExistsException("You have already saved the destination");
+        } else {
+            
+            
+            try {
+                
+                User user = em.find(User.class, userName);
+                
+                user.addFavourite(favourite);
+                
+                em.getTransaction().begin();
+                em.persist(user);
+                em.getTransaction().commit();
+                
+                return favourite.getCountryName();
+            } finally {
+                em.close();
+            }
         }
-    }
+        }
 
 }

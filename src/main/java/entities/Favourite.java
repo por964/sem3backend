@@ -54,8 +54,6 @@ public class Favourite implements Serializable {
         this.users = users;
     }
     
-    
-    
     public int getId() {
         return id;
     }
@@ -63,6 +61,13 @@ public class Favourite implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Favourite{" + "id=" + id + ", countryName=" + countryName + '}';
+    }
+    
+    
     
     
 

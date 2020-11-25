@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.ExchangeRatesDTO;
 import entities.ExchangeRates;
+import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import facades.UserFacade;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class DestinationResource {
     @POST
     @Path("open/{country}/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String saveFavourite(@PathParam("country") String country, @PathParam("userName") String userName) throws IOException, InterruptedException, ExecutionException, TimeoutException, MissingInputException {
+    public String saveFavourite(@PathParam("country") String country, @PathParam("userName") String userName) throws IOException, InterruptedException, ExecutionException, TimeoutException, MissingInputException, AlreadyExistsException {
         String result = FACADE.addFavourite(country, userName);
         return result;
     }
