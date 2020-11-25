@@ -2,8 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.JSONArray;
 import dtos.ExchangeRatesDTO;
 import entities.ExchangeRates;
+import entities.Favourite;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import facades.UserFacade;
@@ -18,9 +20,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import fetcher.DestinationFetcher;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.POST;
+import javax.ws.rs.core.Response;
 import utils.EMF_Creator;
 import utils.HttpUtils;
 
@@ -32,7 +37,24 @@ public class DestinationResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
-
+    
+    @GET
+    @Path("open/favourites/{user}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getFavorites(@PathParam("user") String user) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        List<Favourite> result = FACADE.getFavorites(user);
+        ArrayList<String> stringResult = new ArrayList<String>();
+        
+        for (Favourite favourite : result) {
+            stringResult.add(favourite.getCountryName());
+        }
+        
+        
+        //JSONArray jsArray = new JSONArray(stringResult);
+        
+        return stringResult;
+    }
+    
     @GET
     @Path("open/{country}")
     @Produces(MediaType.APPLICATION_JSON)

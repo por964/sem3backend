@@ -83,7 +83,6 @@ public class UserFacade {
         query.setParameter("user", user);
         List<Favourite> resultList = query.getResultList();
         return resultList;       
-        
     }
     
         public String addFavourite(String country, String userName) throws MissingInputException, AlreadyExistsException  {
@@ -100,6 +99,7 @@ public class UserFacade {
         
         List<Favourite> usersFavorites = getFavorites(userName);
         
+        //Sikrer at vi kun sammenligner CountryName og ikke ID'et/key'en:
         boolean favoriteExists = usersFavorites.stream().anyMatch(o -> o.getCountryName().equals(lowerCountry));
         
         if (favoriteExists== true) {

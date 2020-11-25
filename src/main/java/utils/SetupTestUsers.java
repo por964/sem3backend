@@ -23,26 +23,26 @@ public class SetupTestUsers {
         // CHANGE the three passwords below, before you uncomment and execute the code below
         // Also, either delete this file, when users are created or rename and add to .gitignore
         // Whatever you do DO NOT COMMIT and PUSH with the real passwords
-        /*
-        Favourite favor = new Favourite("Germany");
         
-        em.getTransaction().begin();
-        em.persist(favor);
-        em.getTransaction().commit();
-        */
-        UserFacade FACADE = UserFacade.getUserFacade(emf);
+        //Favourite favor = new Favourite("Germany");
+        
+        //em.getTransaction().begin();
+        //em.persist(favor);
+        //em.getTransaction().commit();
+        
+        //UserFacade FACADE = UserFacade.getUserFacade(emf);
         
         //FACADE.getFavorites("user");
         
         
 
-        FACADE.addFavourite("belgium", "user");
+        //FACADE.addFavourite("belgium", "user");
         
-        System.out.println(FACADE.getFavorites("user"));
+        //System.out.println(FACADE.getFavorites("user"));
         //FACADE.addFavourite("greece", "user");
         //FACADE.addFavourite("ireland", "user");
         
-        /*
+        
         User user = new User("user", "test1");
         User admin = new User("admin", "test1");
         User both = new User("user_admin", "test1");
@@ -72,7 +72,7 @@ public class SetupTestUsers {
         em.persist(admin);
         em.persist(both);
         em.persist(inf);
-        em.persist(fav);
+        //em.persist(fav);
         em.getTransaction().commit();
         System.out.println("PW: " + user.getUserPass());
         System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
@@ -80,7 +80,7 @@ public class SetupTestUsers {
         System.out.println("Created TEST Users");
 
         //FACADE.addFavourite("Denmark", "user");
-*/
+
     }
 
 }
