@@ -16,10 +16,16 @@ public class UserDTO {
     private String userName;
     private String userPass;
 
-    public UserDTO(String userName) {
+    public UserDTO(String userName, String userPass) {
         this.userName = userName;
         this.userPass=userPass;
     }
+
+    public UserDTO(String userName) {
+        this.userName = userName;
+    }
+    
+    
     public UserDTO (User user){
         this.userName=user.getUserName();
         this.userPass=user.getUserPass();

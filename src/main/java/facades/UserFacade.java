@@ -19,7 +19,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import security.errorhandling.AuthenticationException;
 
-
 public class UserFacade {
 
     private static EntityManagerFactory emf;
@@ -139,11 +138,33 @@ public class UserFacade {
             }
         }
 
+    }
 
+    public UserDTO newUser(UserDTO userDTO) throws MissingInputException {
+        User newuser = new User(userDTO.getUserName(), userDTO.getUserPass());
+
+        EntityManager em = emf.createEntityManager();
+
+        if (userDTO.getUserName().length() == 0 || (userDTO.getUserPass().length() == 0)) {
+            throw new MissingInputException("One or both values are missing");
+        } else {
+
+            try {
+
+                em.getTransaction().begin();
+                em.persist(newuser);
+                em.getTransaction().commit();
+                UserDTO newUserDTO = new UserDTO(newuser);
+                return newUserDTO;
+            } finally {
+                em.close();
+            }
         }
-        
+
+    }
+
     public UserDTO deleteUser(String userName) throws NotFoundException {
-        
+
         EntityManager em = emf.createEntityManager();
         try {
             User user = em.find(User.class, userName);
@@ -155,7 +176,7 @@ public class UserFacade {
                 return new UserDTO(user);
 
             } else {
-               throw new NotFoundException ("User not found");
+                throw new NotFoundException("User not found");
             }
         } finally {
             em.close();

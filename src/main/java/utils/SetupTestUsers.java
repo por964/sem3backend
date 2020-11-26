@@ -38,7 +38,7 @@ public class SetupTestUsers {
 
         //FACADE.addFavourite("belgium", "user");
         
-        System.out.println(FACADE.getFavorites("user"));
+        //System.out.println(FACADE.newUser("nybruger", "claes"));
         //FACADE.addFavourite("greece", "user");
         //FACADE.addFavourite("ireland", "user");
         

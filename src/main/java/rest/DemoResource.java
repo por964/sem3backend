@@ -1,6 +1,7 @@
 package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.User;
 import errorhandling.MissingInputException;
@@ -82,4 +83,17 @@ public class DemoResource {
         UserInfoDTO newU = FACADE.addUserInfo(p, user);
         return GSON.toJson(newU);
     }
+    
+    @POST
+    @Path("/{username}/{password}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String addUser(@PathParam("username") String userName, @PathParam("password")String userPass) throws MissingInputException {
+        UserDTO userdto = GSON.fromJson(userName, UserDTO.class);
+        userdto.setUserPass(GSON.fromJson(userPass, String.class));
+        UserDTO newU = FACADE.newUser(userdto);
+        return GSON.toJson(newU);
+    }
+    
+    
 }
