@@ -1,11 +1,13 @@
 package facades;
 
+import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.Favourite;
 import entities.User;
 import entities.UserInfo;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
+import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -124,5 +126,25 @@ public class UserFacade {
             }
         }
         }
+        
+    public UserDTO deleteUser(String userName) throws NotFoundException {
+        
+        EntityManager em = emf.createEntityManager();
+        try {
+            User user = em.find(User.class, userName);
+
+            if (user != null) {
+                em.getTransaction().begin();
+                em.remove(user);
+                em.getTransaction().commit();
+                return new UserDTO(user);
+
+            } else {
+               throw new NotFoundException ("User not found");
+            }
+        } finally {
+            em.close();
+        }
+    }
 
 }
