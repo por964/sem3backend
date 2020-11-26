@@ -30,7 +30,7 @@ public class SetupTestUsers {
         //em.persist(favor);
         //em.getTransaction().commit();
         
-        //UserFacade FACADE = UserFacade.getUserFacade(emf);
+        UserFacade FACADE = UserFacade.getUserFacade(emf);
         
         //FACADE.getFavorites("user");
         
@@ -38,11 +38,11 @@ public class SetupTestUsers {
 
         //FACADE.addFavourite("belgium", "user");
         
-        //System.out.println(FACADE.getFavorites("user"));
+        System.out.println(FACADE.getFavorites("user"));
         //FACADE.addFavourite("greece", "user");
         //FACADE.addFavourite("ireland", "user");
         
-        
+        /*
         User user = new User("user", "test1");
         User admin = new User("admin", "test1");
         User both = new User("user_admin", "test1");
@@ -80,6 +80,7 @@ public class SetupTestUsers {
         System.out.println("Created TEST Users");
 
         //FACADE.addFavourite("Denmark", "user");
+*/
 
     }
 
