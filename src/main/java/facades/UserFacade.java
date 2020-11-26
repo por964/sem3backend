@@ -1,12 +1,9 @@
 package facades;
 
-<<<<<<< HEAD
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-=======
 import dtos.UserDTO;
->>>>>>> 3a7a80d7a2a5f0584733d4ad94f8da1a9665801d
 import dtos.UserInfoDTO;
 import entities.Favourite;
 import entities.User;
@@ -22,9 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import security.errorhandling.AuthenticationException;
 
-/**
- * @author lam@cphbusiness.dk
- */
+
 public class UserFacade {
 
     private static EntityManagerFactory emf;
@@ -143,8 +138,8 @@ public class UserFacade {
                 em.close();
             }
         }
-<<<<<<< HEAD
-=======
+
+
         }
         
     public UserDTO deleteUser(String userName) throws NotFoundException {
@@ -165,7 +160,6 @@ public class UserFacade {
         } finally {
             em.close();
         }
->>>>>>> 3a7a80d7a2a5f0584733d4ad94f8da1a9665801d
     }
 
 }
