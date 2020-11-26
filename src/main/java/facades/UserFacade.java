@@ -8,6 +8,7 @@ import entities.UserInfo;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import errorhandling.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -146,5 +147,18 @@ public class UserFacade {
             em.close();
         }
     }
-
+public List<UserDTO> getAllUsers() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+            List<User> users = query.getResultList();
+            List<UserDTO> userDTOs = new ArrayList();
+            users.forEach((User user) -> {
+                userDTOs.add(new UserDTO(user));
+            });
+            return userDTOs;
+        } finally {
+            em.close();
+        }
+    }
 }
