@@ -49,7 +49,7 @@ public class DestinationResource {
             stringResult.add(favourite.getCountryName());
         }
         
-        
+        String countries = gson.toJson(stringResult);
         //JSONArray jsArray = new JSONArray(stringResult);
         
         return stringResult;
