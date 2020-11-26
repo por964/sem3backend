@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import dtos.ExchangeRatesDTO;
+import dtos.UserDTO;
 import entities.ExchangeRates;
 import entities.Favourite;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
+import errorhandling.NotFoundException;
 import facades.UserFacade;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Response;
 import utils.EMF_Creator;
@@ -79,4 +82,13 @@ public class DestinationResource {
         String result = FACADE.addFavourite(country, userName);
         return result;
     }
+    
+    @DELETE
+    @Path("open/{userName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser (@PathParam("userName") String userName) throws NotFoundException {
+       UserDTO userDTO = FACADE.deleteUser(userName);
+       return gson.toJson(userDTO);
+    }
+    
 }
