@@ -8,6 +8,7 @@ import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.User;
 import errorhandling.API_Exception;
+import errorhandling.AlreadyExistsException;
 import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingInputException;
 import facades.UserFacade;
@@ -98,7 +99,7 @@ public class DemoResource {
     @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(String jsonString) throws API_Exception, MissingInputException {
+    public Response createUser(String jsonString) throws API_Exception, MissingInputException, AlreadyExistsException {
         String username;
         String password;
         try {

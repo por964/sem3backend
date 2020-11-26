@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.Favourite;
+import entities.Role;
 import entities.User;
 import entities.UserInfo;
 import errorhandling.AlreadyExistsException;
@@ -141,18 +142,26 @@ public class UserFacade {
 
     }
 
-    public UserDTO newUser(UserDTO userDTO) throws MissingInputException {
+    public UserDTO newUser(UserDTO userDTO) throws MissingInputException, AlreadyExistsException {
         User newuser = new User(userDTO.getUserName(), userDTO.getUserPass());
 
         EntityManager em = emf.createEntityManager();
+        
+        Role userRole = new Role("user");
 
         if (userDTO.getUserName().length() == 0 || (userDTO.getUserPass().length() == 0)) {
             throw new MissingInputException("One or both values are missing");
-        } else {
+        } 
+        if (em.find(User.class, newuser.getUserName())!= null) {
+            throw new AlreadyExistsException("User already exists");
+        }
+        
+        else {
 
             try {
 
                 em.getTransaction().begin();
+                newuser.addRole(userRole);
                 em.persist(newuser);
                 em.getTransaction().commit();
                 UserDTO newUserDTO = new UserDTO(newuser);
