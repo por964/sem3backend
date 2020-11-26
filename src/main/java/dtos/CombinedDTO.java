@@ -26,9 +26,6 @@ public class CombinedDTO {
     private Long deaths;
     private Long recovered;
     private double infectionRate;
-    
-    
-    
 
     public CombinedDTO(DestinationDTO destinationDTO, ExchangeRatesDTO exchangeRatesDTO, CovidInfoDTO covidinfoDTO) {
         this.name = destinationDTO.getName();
@@ -42,8 +39,6 @@ public class CombinedDTO {
         this.cases = covidinfoDTO.getCases();
         this.deaths = covidinfoDTO.getDeaths();
         this.recovered = covidinfoDTO.getRecovered();
-        
-       
         
     }
 
