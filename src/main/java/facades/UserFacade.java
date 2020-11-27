@@ -206,4 +206,28 @@ public List<UserDTO> getAllUsers() {
             em.close();
         }
     }
+
+public String changeToAdmin(String userName) throws NotFoundException {
+            
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            User user = em.find(User.class, userName);
+
+            if (user != null) {
+                
+                em.getTransaction().begin();
+                Role adminRole = new Role("admin");
+                user.addRole(adminRole);
+                em.getTransaction().commit();
+                return user.getUserName();
+
+            } else {
+                throw new NotFoundException("User not found");
+            }
+        } finally {
+            em.close();
+        }
+}
+
 }
