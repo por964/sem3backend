@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-@Disabled
+//@Disabled
 public class LoginEndpointTest {
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -99,14 +99,14 @@ public class LoginEndpointTest {
     }
     @Test
     public void serverIsRunning() {
-        given().when().get("/info").then().statusCode(200);
+        given().when().get("/user").then().statusCode(200);
     }
     @Test
     public void testRestNoAuthenticationRequired() {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/").then()
+                .get("/user/").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello anonymous"));
     }
@@ -118,7 +118,7 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/user/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: admin"));
     }
@@ -129,7 +129,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user"));
     }
@@ -140,7 +140,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then() //Call Admin endpoint as user
+                .get("/user/admin").then() //Call Admin endpoint as user
                 .statusCode(401);
     }
     @Test
@@ -150,7 +150,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call User endpoint as Admin
+                .get("/user/user").then() //Call User endpoint as Admin
                 .statusCode(401);
     }
     @Test
@@ -161,7 +161,7 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/user/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: user_admin"));
     }
@@ -172,7 +172,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user_admin"));
     }
@@ -182,7 +182,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
@@ -193,7 +193,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
