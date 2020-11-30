@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
 import entities.Currency;
@@ -14,13 +9,18 @@ import entities.ExchangeRates;
  */
 
 public class ExchangeRatesDTO {
-    
+    private Double fxRate;
     private Currency rates;
 
     public ExchangeRatesDTO(Currency rates) {
         this.rates = rates;
     }
+
+    public ExchangeRatesDTO(Double fxRate) {
+        this.fxRate = fxRate;
+    }
     
+      
     public ExchangeRatesDTO() {
     }
     
@@ -31,5 +31,15 @@ public class ExchangeRatesDTO {
     public void setRates(Currency rates) {
         this.rates = rates;
     }
+
+    public Double getFxRate() {
+        return fxRate;
+    }
+
+    public void setFxRate(Double fxRate) {
+        this.fxRate = fxRate;
+    }
+    
+    
             
 }

@@ -1,3 +1,4 @@
+  
 package utils;
 
 import entities.Favourite;
@@ -42,12 +43,17 @@ public class SetupTestUsers {
         //FACADE.addFavourite("greece", "user");
         //FACADE.addFavourite("ireland", "user");
         
-        /*
+        
         User user = new User("user", "test1");
         User admin = new User("admin", "test1");
         User both = new User("user_admin", "test1");
         User claes = new User("claes", "rufbtr1");
         User kunde = new User("kunde", "test22");
+        User user1 = new User("user1", "test1");
+        User user2 = new User("user2", "test2");
+        User user3 = new User("user3", "test3");
+        User user4 = new User("user4", "test4");
+        User user5 = new User("user5", "test5");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test")) {
             throw new UnsupportedOperationException("You have not changed the passwords");
@@ -64,6 +70,11 @@ public class SetupTestUsers {
         admin.addRole(adminRole);
         both.addRole(userRole);
         both.addRole(adminRole);
+        user1.addRole(userRole);
+        user2.addRole(userRole);
+        user3.addRole(userRole);
+        user4.addRole(userRole);
+        user5.addRole(userRole);
         em.persist(claes);
         em.persist(kunde);
         em.persist(userRole);
@@ -72,6 +83,11 @@ public class SetupTestUsers {
         em.persist(admin);
         em.persist(both);
         em.persist(inf);
+        em.persist(user1);
+        em.persist(user2);
+        em.persist(user3);
+        em.persist(user4);
+        em.persist(user5);
         //em.persist(fav);
         em.getTransaction().commit();
         System.out.println("PW: " + user.getUserPass());
@@ -80,7 +96,7 @@ public class SetupTestUsers {
         System.out.println("Created TEST Users");
 
         //FACADE.addFavourite("Denmark", "user");
-*/
+
 
     }
 

@@ -21,11 +21,15 @@ public class CombinedDTO {
     private List<DestinationDTO> destinations;
     private Currencies currencies;
     private Currency rates;
+    private Double rate;
     private String last_update;
     private Long cases;
     private Long deaths;
     private Long recovered;
     private double infectionRate;
+    
+    
+    
 
     public CombinedDTO(DestinationDTO destinationDTO, ExchangeRatesDTO exchangeRatesDTO, CovidInfoDTO covidinfoDTO) {
         this.name = destinationDTO.getName();
@@ -35,10 +39,13 @@ public class CombinedDTO {
         this.destinations = destinationDTO.getDestinations();
         this.currencies = destinationDTO.getCurrencies().get(0);
         this.rates = exchangeRatesDTO.getRates();
+        //this.rate = exchangeRatesDTO.getFxRate();
         this.last_update = covidinfoDTO.getLastUpdate();
         this.cases = covidinfoDTO.getCases();
         this.deaths = covidinfoDTO.getDeaths();
         this.recovered = covidinfoDTO.getRecovered();
+        
+       
         
     }
 
