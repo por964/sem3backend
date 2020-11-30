@@ -24,7 +24,7 @@ import dtos.CombinedDTO;
 import dtos.CovidInfoDTO;
 import dtos.ExchangeRatesDTO;
 import dtos.Rate;
-import dtos.RatesDTO;
+import dtos.RateDTO;
 import java.util.Iterator;
 import static javax.ws.rs.client.Entity.json;
 import jdk.nashorn.internal.parser.JSONParser;
@@ -71,7 +71,8 @@ public class DestinationFetcher {
 
         DestinationDTO destinationDTO = futureDestination.get();
 
-        ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
+        //ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
+        RateDTO rate = getRates2(currencyCode);
 
         CovidInfoDTO covidDTO = getCovidInfo(countryCode, threadPool, gson);
 
@@ -80,7 +81,7 @@ public class DestinationFetcher {
 
         destinationDTO.setInfectionRate(calculateInfectionRate(population, cases));
 
-        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, exchangeRatesDTO, covidDTO);
+        CombinedDTO combinedDTO = new CombinedDTO(destinationDTO, rate, covidDTO);
 
         String combinedDTOString = gson.toJson(combinedDTO);
 
@@ -101,7 +102,7 @@ public class DestinationFetcher {
                 //ExchangeRatesDTO exDTO = new ExchangeRatesDTO(fxRate);
                 ExchangeRatesDTO exchangeRatesDTO = gson.fromJson(rates, ExchangeRatesDTO.class);
 
-                //RatesDTO ratesdto = gson.fromJson(rates, RatesDTO.class);
+                //RatesDTO ratesdto = gson.fromJson(rates, RateDTO.class);
                 return exchangeRatesDTO;
             }
         };
@@ -134,13 +135,13 @@ public class DestinationFetcher {
         return result;
     }
 
-    public static RatesDTO getRates2(String code) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public static RateDTO getRates2(String code) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         String rates = HttpUtils.fetchData(RATES_SERVER + code);
         
          ObjectMapper objectMapper = new ObjectMapper();
          
-         RatesDTO ratedto = new RatesDTO();
+         RateDTO ratedto = new RateDTO();
          
       try {
          JsonNode node = objectMapper.readValue(rates, JsonNode.class);

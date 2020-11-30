@@ -4,15 +4,15 @@ package dtos;
  *
  * @author claes
  */
-public class RatesDTO {
+public class RateDTO {
     
     public Double rate;
 
-    public RatesDTO(Double rate) {
+    public RateDTO(Double rate) {
         this.rate = rate;
     }
 
-    public RatesDTO() {
+    public RateDTO() {
     }
 
     public Double getRate() {
