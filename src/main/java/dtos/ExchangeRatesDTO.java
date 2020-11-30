@@ -1,7 +1,6 @@
 package dtos;
 
 import entities.Currency;
-import entities.ExchangeRates;
 
 /**
  *

@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
 import entities.Currencies;
-import entities.Currency;
 import java.util.List;
 
 /**
@@ -20,16 +14,13 @@ public class CombinedDTO {
     private Long population;
     private List<DestinationDTO> destinations;
     private Currencies currencies;
-    private Currency rates;
     private Double fxRate;
     private String last_update;
     private Long cases;
     private Long deaths;
     private Long recovered;
     private double infectionRate;
-    private RateDTO ratedto;
-    
-    
+    private RateDTO ratedto;  
     
 
     public CombinedDTO(DestinationDTO destinationDTO, RateDTO ratedto, CovidInfoDTO covidinfoDTO) {
@@ -40,7 +31,6 @@ public class CombinedDTO {
         this.destinations = destinationDTO.getDestinations();
         this.currencies = destinationDTO.getCurrencies().get(0);
         this.fxRate = ratedto.getRate();
-        //this.rate = exchangeRatesDTO.getFxRate();
         this.last_update = covidinfoDTO.getLastUpdate();
         this.cases = covidinfoDTO.getCases();
         this.deaths = covidinfoDTO.getDeaths();
@@ -83,14 +73,6 @@ public class CombinedDTO {
 
     public void setCurrencies(Currencies currencies) {
         this.currencies = currencies;
-    }
-
-    public Currency getRates() {
-        return rates;
-    }
-
-    public void setRates(Currency rates) {
-        this.rates = rates;
     }
 
     public Long getPopulation() {

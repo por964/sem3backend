@@ -2,7 +2,6 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.Favourite;
@@ -14,8 +13,6 @@ import errorhandling.MissingInputException;
 import errorhandling.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
@@ -80,17 +77,6 @@ public class UserFacade {
         } finally {
             em.close();
         }
-    }
-
-    public String createJsonArrayFromList(List<String> list) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-
-        String JSONObject = gson.toJson(list);
-
-        Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
-        String prettyJson = prettyGson.toJson(list);
-        return prettyJson;
     }
 
     public List<Favourite> getFavorites(String user) {

@@ -3,19 +3,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.nimbusds.jose.JOSEException;
 import dtos.UserDTO;
 import dtos.UserInfoDTO;
 import entities.User;
 import errorhandling.API_Exception;
 import errorhandling.AlreadyExistsException;
-import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingInputException;
 import errorhandling.NotFoundException;
 import facades.UserFacade;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,8 +28,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import static security.LoginEndpoint.USER_FACADE;
-import security.errorhandling.AuthenticationException;
 import utils.EMF_Creator;
 /**
  * @author lam@cphbusiness.dk

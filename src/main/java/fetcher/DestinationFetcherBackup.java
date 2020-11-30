@@ -2,11 +2,8 @@ package fetcher;
 
 import com.google.gson.Gson;
 import dtos.DestinationDTO;
-import entities.Destination;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

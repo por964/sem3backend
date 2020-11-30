@@ -2,14 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nimbusds.jose.shaded.json.JSONArray;
-import dtos.ExchangeRatesDTO;
-import dtos.UserDTO;
-import entities.ExchangeRates;
 import entities.Favourite;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
-import errorhandling.NotFoundException;
 import facades.UserFacade;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -26,11 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
-import javax.ws.rs.core.Response;
 import utils.EMF_Creator;
-import utils.HttpUtils;
 
 @Path("destination")
 public class DestinationResource {

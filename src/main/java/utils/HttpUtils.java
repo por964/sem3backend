@@ -16,13 +16,13 @@ public class HttpUtils {
         con.setRequestProperty("Accept", "application/json");
         con.setRequestProperty("User-Agent", "server");
 
-        Scanner scan = new Scanner(con.getInputStream(), "UTF-8");
-        String jsonStr = "";
-
-        while (scan.hasNext()) {
-            jsonStr += scan.nextLine();
+        String jsonStr;
+        try (Scanner scan = new Scanner(con.getInputStream(), "UTF-8")) {
+            jsonStr = "";
+            while (scan.hasNext()) {
+                jsonStr += scan.nextLine();
+            }
         }
-        scan.close();
         return jsonStr;
     }
 }

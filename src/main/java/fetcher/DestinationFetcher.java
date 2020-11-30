@@ -1,16 +1,12 @@
 package fetcher;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.DestinationDTO;
-import entities.Destination;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -19,16 +15,9 @@ import java.util.concurrent.TimeoutException;
 import utils.HttpUtils;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
-import com.nimbusds.jose.shaded.json.JSONObject;
 import dtos.CombinedDTO;
 import dtos.CovidInfoDTO;
-import dtos.ExchangeRatesDTO;
-import dtos.Rate;
 import dtos.RateDTO;
-import java.util.Iterator;
-import static javax.ws.rs.client.Entity.json;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.eclipse.persistence.sessions.serializers.JSONSerializer;
 
 /**
  *
@@ -71,8 +60,7 @@ public class DestinationFetcher {
 
         DestinationDTO destinationDTO = futureDestination.get();
 
-        //ExchangeRatesDTO exchangeRatesDTO = getRates(currencyCode, threadPool, gson);
-        RateDTO rate = getRates2(currencyCode);
+        RateDTO rate = getRate(currencyCode);
 
         CovidInfoDTO covidDTO = getCovidInfo(countryCode, threadPool, gson);
 
@@ -88,31 +76,6 @@ public class DestinationFetcher {
         return combinedDTOString;
     }
 
-    public static ExchangeRatesDTO getRates(String code, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-
-        Callable<ExchangeRatesDTO> destTask = new Callable<ExchangeRatesDTO>() {
-            @Override
-            public ExchangeRatesDTO call() throws IOException {
-
-                String rates = HttpUtils.fetchData(RATES_SERVER + code);
-
-                //ObjectMapper objectMapper = new ObjectMapper();
-                //JsonNode jsonNode = objectMapper.readTree(rates);
-                //Double fxRate = jsonNode.get(code).asDouble();
-                //ExchangeRatesDTO exDTO = new ExchangeRatesDTO(fxRate);
-                ExchangeRatesDTO exchangeRatesDTO = gson.fromJson(rates, ExchangeRatesDTO.class);
-
-                //RatesDTO ratesdto = gson.fromJson(rates, RateDTO.class);
-                return exchangeRatesDTO;
-            }
-        };
-
-        Future<ExchangeRatesDTO> future = threadPool.submit(destTask);
-
-        ExchangeRatesDTO result = future.get();
-
-        return result;
-    }
 
     public static CovidInfoDTO getCovidInfo(String countryAlpha, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
@@ -135,7 +98,7 @@ public class DestinationFetcher {
         return result;
     }
 
-    public static RateDTO getRates2(String code) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public static RateDTO getRate(String code) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         String rates = HttpUtils.fetchData(RATES_SERVER + code);
         
@@ -153,7 +116,6 @@ public class DestinationFetcher {
          System.out.println(ratedto);
          
       } catch (IOException e) {
-         e.printStackTrace();
       }return ratedto;
 
     }
