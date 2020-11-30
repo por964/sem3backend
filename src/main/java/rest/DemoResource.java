@@ -11,6 +11,7 @@ import errorhandling.API_Exception;
 import errorhandling.AlreadyExistsException;
 import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingInputException;
+import errorhandling.NotFoundException;
 import facades.UserFacade;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -36,7 +38,7 @@ import utils.EMF_Creator;
 /**
  * @author lam@cphbusiness.dk
  */
-@Path("info")
+@Path("user")
 public class DemoResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -102,6 +104,7 @@ public class DemoResource {
     public Response createUser(String jsonString) throws API_Exception, MissingInputException, AlreadyExistsException {
         String username;
         String password;
+        
         try {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             username = json.get("username").getAsString();
@@ -109,15 +112,28 @@ public class DemoResource {
         } catch (Exception e) {
            throw new API_Exception("Malformed JSON Suplied",400,e);
         }
-
+        
             UserDTO userdto = new UserDTO(username, password);
             FACADE.newUser(userdto);
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
+            
             return Response.ok(new Gson().toJson(responseJson)).build();
-
-
     }
     
+    @DELETE
+    @Path("/delete/{userName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser (@PathParam("userName") String userName) throws NotFoundException {
+       UserDTO userDTO = FACADE.deleteUser(userName);
+       return GSON.toJson(userDTO);
+    }
     
+    @POST
+    @Path("/promote/{userName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String changeToAdmin (@PathParam("userName") String userName) throws NotFoundException {
+       FACADE.changeToAdmin(userName);
+       return GSON.toJson(userName);
+    }
 }

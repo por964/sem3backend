@@ -83,12 +83,4 @@ public class DestinationResource {
         return result;
     }
     
-    @DELETE
-    @Path("open/{userName}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser (@PathParam("userName") String userName) throws NotFoundException {
-       UserDTO userDTO = FACADE.deleteUser(userName);
-       return gson.toJson(userDTO);
-    }
-    
 }
