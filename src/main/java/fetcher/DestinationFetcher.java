@@ -158,7 +158,4 @@ public class DestinationFetcher {
 
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException, ExecutionException {
-        System.out.println(getRates2("HUF"));
-    }
 }
