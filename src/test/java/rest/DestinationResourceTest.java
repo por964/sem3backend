@@ -29,7 +29,7 @@ import utils.EMF_Creator;
  *
  * @author am
  */
-@Disabled
+
 public class DestinationResourceTest {
 
     private static final int SERVER_PORT = 7777;
