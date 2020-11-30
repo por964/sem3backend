@@ -53,7 +53,6 @@ public class DestinationResource {
         }
         
         String countries = gson.toJson(stringResult);
-        //JSONArray jsArray = new JSONArray(stringResult);
         
         return stringResult;
     }
