@@ -72,8 +72,8 @@ public class DestinationResourceTest {
 
         try {
             em.getTransaction().begin();
-            //em.createQuery("delete from Users").executeUpdate();
-            //em.createNamedQuery("Users.deleteAllRows").executeUpdate();
+            //em.createQuery("delete from User").executeUpdate();
+            em.createNamedQuery("User.deleteAllRows").executeUpdate();
             em.persist(u1);
             em.persist(u2);
             //em.persist(d1);
