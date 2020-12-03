@@ -1,4 +1,4 @@
-package fetcher;
+package facades;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,12 +18,26 @@ import com.google.gson.reflect.TypeToken;
 import dtos.CombinedDTO;
 import dtos.CovidInfoDTO;
 import dtos.RateDTO;
+import entities.Favourite;
+import entities.User;
+import errorhandling.MissingInputException;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author claes
  */
-public class DestinationFetcher {
+public class DestinationFacade {
+    
+    private static EntityManagerFactory emf;
+    private static DestinationFacade instance;
+    
+    private DestinationFacade() {
+        
+    }
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
     final static String RATES_SERVER = "https://api.exchangeratesapi.io/latest?base=USD&symbols=";
@@ -33,6 +47,16 @@ public class DestinationFetcher {
     static String countryCode;
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    
+    
+    
+    public static DestinationFacade getDestinationFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new DestinationFacade();
+        }
+        return instance;
+    }
 
     public static double calculateInfectionRate(double population, double cases) {
         double rate = (cases / population) * 100;
@@ -117,6 +141,62 @@ public class DestinationFetcher {
          
       } catch (IOException e) {
       }return ratedto;
+
+    }
+    
+        public List<Favourite> getFavorites(String user) {
+        EntityManager em = emf.createEntityManager();
+
+        TypedQuery<Favourite> query = em.createQuery("select f FROM Favourite f INNER JOIN f.users User WHERE User.userName = :user", Favourite.class);
+        query.setParameter("user", user);
+        List<Favourite> resultList = query.getResultList();
+        return resultList;
+    }
+
+    public String addFavourite(String country, String userName) throws MissingInputException {
+
+        String lowerCountry = country.toLowerCase();
+
+        EntityManager em = emf.createEntityManager();
+
+        if (lowerCountry.length() == 0 || (userName.length() == 0)) {
+            throw new MissingInputException("One or both values are missing");
+        }
+        
+        String returnString = "";
+
+        Favourite favourite = new Favourite(lowerCountry);
+
+        List<Favourite> usersFavorites = getFavorites(userName);
+
+        //Sikrer at vi kun sammenligner CountryName og ikke ID'et/key'en:
+        boolean favoriteExists = usersFavorites.stream().anyMatch(o -> o.getCountryName().equals(lowerCountry));
+
+        if (favoriteExists == true) {
+            System.out.println(getFavorites(userName));
+            returnString = "You have already saved the destination";
+            return returnString;
+
+            
+        } else {
+
+            try {
+
+                User user = em.find(User.class, userName);
+
+                user.addFavourite(favourite);
+
+                em.getTransaction().begin();
+                em.persist(user);
+                em.getTransaction().commit();
+                
+                returnString = favourite.getCountryName();
+
+                return returnString;
+            } finally {
+                em.close();
+            }
+        }
 
     }
 

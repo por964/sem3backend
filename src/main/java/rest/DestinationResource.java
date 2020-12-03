@@ -16,7 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import fetcher.DestinationFetcher;
+import facades.DestinationFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
@@ -32,19 +32,18 @@ public class DestinationResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
+    private static final DestinationFacade DESTINATIONFACADE = DestinationFacade.getDestinationFacade(EMF);
     
     @GET
     @Path("open/favourites/{user}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getFavorites(@PathParam("user") String user) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        List<Favourite> result = FACADE.getFavorites(user);
+        List<Favourite> result = DESTINATIONFACADE.getFavorites(user);
         ArrayList<String> stringResult = new ArrayList<String>();
         
         for (Favourite favourite : result) {
             stringResult.add(favourite.getCountryName());
         }
-        
-        String countries = gson.toJson(stringResult);
         
         return stringResult;
     }
@@ -53,7 +52,7 @@ public class DestinationResource {
     @Path("open/{country}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getOpenDestination(@PathParam("country") String country) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        String result = DestinationFetcher.getDestination(country, es, gson);
+        String result = DestinationFacade.getDestination(country, es, gson);
         return result;
     }
     
@@ -62,7 +61,7 @@ public class DestinationResource {
     @RolesAllowed("user")
     @Produces(MediaType.APPLICATION_JSON)
     public String getRestrictedDestination(@PathParam("country") String country) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        String result = DestinationFetcher.getDestination(country, es, gson);
+        String result = DestinationFacade.getDestination(country, es, gson);
         return result;
     }
     
@@ -70,7 +69,7 @@ public class DestinationResource {
     @Path("open/{country}/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
     public String saveFavourite(@PathParam("country") String country, @PathParam("userName") String userName) throws IOException, InterruptedException, ExecutionException, TimeoutException, MissingInputException, AlreadyExistsException {
-        String result = FACADE.addFavourite(country, userName);
+        String result = gson.toJson(DESTINATIONFACADE.addFavourite(country, userName));
         return result;
     }
     

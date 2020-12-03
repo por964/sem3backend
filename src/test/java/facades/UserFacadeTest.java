@@ -34,6 +34,7 @@ public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
     private static UserFacade facade;
+    private static DestinationFacade destiFacade;
     private static User u1, u2, u3;
     private static Favourite f1, f2, f3;
 
@@ -45,6 +46,7 @@ public class UserFacadeTest {
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = UserFacade.getUserFacade(emf);
+        destiFacade = DestinationFacade.getDestinationFacade(emf);
 
         u1 = new User("user11", "test11");
         u2 = new User("user12", "test12");
@@ -114,7 +116,7 @@ public class UserFacadeTest {
 
     @Test
     public void testGetFavouritesByCount() {
-        int actual = facade.getFavorites(u1.getUserName()).size();
+        int actual = destiFacade.getFavorites(u1.getUserName()).size();
         int exp = 2;
         assertEquals(exp, actual);
 
@@ -123,7 +125,7 @@ public class UserFacadeTest {
     @Test
     public void testGetFavouritesByContent() {
         List<Favourite> favList = new ArrayList<Favourite>();
-        favList = facade.getFavorites(u1.getUserName());
+        favList = destiFacade.getFavorites(u1.getUserName());
 
         assertThat(favList, hasItem(
                 Matchers.<Favourite>hasProperty("countryName", is("Sweden"))));
@@ -132,8 +134,8 @@ public class UserFacadeTest {
 
     @Test
     public void testAddFavourite() throws MissingInputException, AlreadyExistsException {
-        facade.addFavourite("Poland", u2.getUserName());
-        int actual = facade.getFavorites(u2.getUserName()).size();
+        destiFacade.addFavourite("Poland", u2.getUserName());
+        int actual = destiFacade.getFavorites(u2.getUserName()).size();
         int exp = 2;
         assertEquals(exp,actual);
         

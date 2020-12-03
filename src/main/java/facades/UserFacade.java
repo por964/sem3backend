@@ -79,54 +79,7 @@ public class UserFacade {
         }
     }
 
-    public List<Favourite> getFavorites(String user) {
-        EntityManager em = emf.createEntityManager();
 
-        TypedQuery<Favourite> query = em.createQuery("select f FROM Favourite f INNER JOIN f.users User WHERE User.userName = :user", Favourite.class);
-        query.setParameter("user", user);
-        List<Favourite> resultList = query.getResultList();
-        return resultList;
-    }
-
-    public String addFavourite(String country, String userName) throws MissingInputException, AlreadyExistsException {
-
-        String lowerCountry = country.toLowerCase();
-
-        EntityManager em = emf.createEntityManager();
-
-        if (lowerCountry.length() == 0 || (userName.length() == 0)) {
-            throw new MissingInputException("One or both values are missing");
-        }
-
-        Favourite favourite = new Favourite(lowerCountry);
-
-        List<Favourite> usersFavorites = getFavorites(userName);
-
-        //Sikrer at vi kun sammenligner CountryName og ikke ID'et/key'en:
-        boolean favoriteExists = usersFavorites.stream().anyMatch(o -> o.getCountryName().equals(lowerCountry));
-
-        if (favoriteExists == true) {
-            System.out.println(getFavorites(userName));
-            throw new AlreadyExistsException("You have already saved the destination");
-        } else {
-
-            try {
-
-                User user = em.find(User.class, userName);
-
-                user.addFavourite(favourite);
-
-                em.getTransaction().begin();
-                em.persist(user);
-                em.getTransaction().commit();
-
-                return favourite.getCountryName();
-            } finally {
-                em.close();
-            }
-        }
-
-    }
 
     public UserDTO newUser(UserDTO userDTO) throws MissingInputException, AlreadyExistsException {
         User newuser = new User(userDTO.getUserName(), userDTO.getUserPass());
