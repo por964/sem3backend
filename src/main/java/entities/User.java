@@ -64,7 +64,6 @@ public class User implements Serializable {
         }
     }
 
-
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
             return null;

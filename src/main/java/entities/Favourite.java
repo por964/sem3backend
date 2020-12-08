@@ -62,12 +62,4 @@ public class Favourite implements Serializable {
     public String toString() {
         return "Favourite{" + "id=" + id + ", countryName=" + countryName + '}';
     }
-    
-    
-    
-    
-
-    
-
-
 }

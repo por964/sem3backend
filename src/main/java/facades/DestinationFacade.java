@@ -26,6 +26,7 @@ import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -33,12 +34,12 @@ import javax.persistence.TypedQuery;
  * @author claes
  */
 public class DestinationFacade {
-    
+
     private static EntityManagerFactory emf;
     private static DestinationFacade instance;
-    
+
     private DestinationFacade() {
-        
+
     }
 
     final static String DESTINATION_SERVER = "https://restcountries.eu/rest/v2/name/";
@@ -49,9 +50,7 @@ public class DestinationFacade {
     static String countryCode;
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    
-    
-    
+
     public static DestinationFacade getDestinationFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -102,7 +101,6 @@ public class DestinationFacade {
         return combinedDTOString;
     }
 
-
     public static CovidInfoDTO getCovidInfo(String countryAlpha, ExecutorService threadPool, final Gson gson) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         Callable<CovidInfoDTO> destTask = new Callable<CovidInfoDTO>() {
@@ -127,26 +125,27 @@ public class DestinationFacade {
     public static RateDTO getRate(String code) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         String rates = HttpUtils.fetchData(RATES_SERVER + code);
-        
-         ObjectMapper objectMapper = new ObjectMapper();
-         
-         RateDTO ratedto = new RateDTO();
-         
-      try {
-         JsonNode node = objectMapper.readValue(rates, JsonNode.class);
-         JsonNode child = node.get("rates");
-         JsonNode childField = child.get(code);
-         Double rate = childField.asDouble();
-         System.out.println(rate);
-         ratedto.setRate(rate);
-         System.out.println(ratedto);
-         
-      } catch (IOException e) {
-      }return ratedto;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        RateDTO ratedto = new RateDTO();
+
+        try {
+            JsonNode node = objectMapper.readValue(rates, JsonNode.class);
+            JsonNode child = node.get("rates");
+            JsonNode childField = child.get(code);
+            Double rate = childField.asDouble();
+            System.out.println(rate);
+            ratedto.setRate(rate);
+            System.out.println(ratedto);
+
+        } catch (IOException e) {
+        }
+        return ratedto;
 
     }
-    
-        public List<Favourite> getFavorites(String user) {
+
+    public List<Favourite> getFavorites(String user) {
         EntityManager em = emf.createEntityManager();
 
         TypedQuery<Favourite> query = em.createQuery("select f FROM Favourite f INNER JOIN f.users User WHERE User.userName = :user", Favourite.class);
@@ -154,26 +153,52 @@ public class DestinationFacade {
         List<Favourite> resultList = query.getResultList();
         return resultList;
     }
-        
+
     public String deleteFavourite(String country, String userName) throws MissingInputException {
-        
+
         EntityManager em = emf.createEntityManager();
         
         Favourite favourite = new Favourite(country);
         
         try {
                 User user = em.find(User.class, userName);
-
+                
+                em.getTransaction().begin();
+                em.remove(user);
+                em.getTransaction().commit();
+                
                 user.removeFavourite(favourite);
-              
+                
                 em.getTransaction().begin();
                 em.persist(user);
                 em.getTransaction().commit();
+
+                
         } finally {
             em.close();
         }
+        
+        /*
+        //Find favourite in DB to retrieve ID:
+        Favourite favourite = em.find(Favourite.class, country);
+
+        //Retrieve ID from favourite:
+        int favouriteID = favourite.getId();
+
+        try {
+
+            em.getTransaction().begin();
+            Query query = em.createQuery("Delete from countries_users c where c.favourites_ID = :favouriteID");
+            query.setParameter("favouriteID", favouriteID);
+            query.executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        */
+                
         return country;
-    }    
+    }
 
     public String addFavourite(String country, String userName) throws MissingInputException {
 
@@ -184,7 +209,7 @@ public class DestinationFacade {
         if (lowerCountry.length() == 0 || (userName.length() == 0)) {
             throw new MissingInputException("One or both values are missing");
         }
-        
+
         String returnString = "";
 
         Favourite favourite = new Favourite(lowerCountry);
@@ -199,7 +224,6 @@ public class DestinationFacade {
             returnString = "You have already saved the destination";
             return returnString;
 
-            
         } else {
 
             try {
@@ -211,7 +235,7 @@ public class DestinationFacade {
                 em.getTransaction().begin();
                 em.persist(user);
                 em.getTransaction().commit();
-                
+
                 returnString = favourite.getCountryName();
 
                 return returnString;
