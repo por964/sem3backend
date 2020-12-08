@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import utils.EMF_Creator;
 
@@ -70,6 +71,14 @@ public class DestinationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String saveFavourite(@PathParam("country") String country, @PathParam("userName") String userName) throws IOException, InterruptedException, ExecutionException, TimeoutException, MissingInputException, AlreadyExistsException {
         String result = gson.toJson(DESTINATIONFACADE.addFavourite(country, userName));
+        return result;
+    }
+    
+    @DELETE
+    @Path("open/{country}/{userName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteFavourite(@PathParam("country") String country, @PathParam("userName") String userName) throws IOException, InterruptedException, ExecutionException, TimeoutException, MissingInputException, AlreadyExistsException {
+        String result = gson.toJson(DESTINATIONFACADE.deleteFavourite(country, userName));
         return result;
     }
     

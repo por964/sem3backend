@@ -131,6 +131,7 @@ public class UserFacade {
             em.close();
         }
     }
+    
 public List<UserDTO> getAllUsers() {
         EntityManager em = emf.createEntityManager();
         try {

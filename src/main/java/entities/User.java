@@ -56,6 +56,14 @@ public class User implements Serializable {
             favourite.getUsers().add(this);
         }
     }
+    
+    public void removeFavourite(Favourite favourite) {
+        if (favourite != null) {
+            this.favourites.remove(favourite);
+            favourite.getUsers().remove(this);
+        }
+    }
+
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {

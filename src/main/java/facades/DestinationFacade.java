@@ -18,9 +18,11 @@ import com.google.gson.reflect.TypeToken;
 import dtos.CombinedDTO;
 import dtos.CovidInfoDTO;
 import dtos.RateDTO;
+import dtos.UserDTO;
 import entities.Favourite;
 import entities.User;
 import errorhandling.MissingInputException;
+import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -152,6 +154,26 @@ public class DestinationFacade {
         List<Favourite> resultList = query.getResultList();
         return resultList;
     }
+        
+    public String deleteFavourite(String country, String userName) throws MissingInputException {
+        
+        EntityManager em = emf.createEntityManager();
+        
+        Favourite favourite = new Favourite(country);
+        
+        try {
+                User user = em.find(User.class, userName);
+
+                user.removeFavourite(favourite);
+              
+                em.getTransaction().begin();
+                em.persist(user);
+                em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return country;
+    }    
 
     public String addFavourite(String country, String userName) throws MissingInputException {
 
