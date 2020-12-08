@@ -11,6 +11,7 @@ import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import errorhandling.NotFoundException;
 import facades.UserFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -64,6 +65,20 @@ public class DemoResource {
             em.close();
         }
     }
+    
+    @GET
+    @Path("allusers")
+    public List<String> getAllUsers() {
+        List<UserDTO> allUsers = FACADE.getAllUsers();
+        List<String> usernames = new ArrayList<>();
+        
+        allUsers.forEach(user -> {
+            usernames.add(user.getUserName());
+        });
+        return usernames;
+    }
+    
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("user")
