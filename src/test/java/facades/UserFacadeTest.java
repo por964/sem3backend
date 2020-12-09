@@ -2,6 +2,7 @@ package facades;
 
 import dtos.UserDTO;
 import entities.Favourite;
+import entities.Role;
 import entities.User;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
@@ -29,7 +30,7 @@ import utils.EMF_Creator;
  *
  * @author am
  */
-
+@Disabled
 public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -37,6 +38,7 @@ public class UserFacadeTest {
     private static DestinationFacade destiFacade;
     private static User u1, u2, u3;
     private static Favourite f1, f2, f3;
+    private static Role r1;
 
     public UserFacadeTest() {
 
@@ -55,6 +57,13 @@ public class UserFacadeTest {
         f1 = new Favourite("Belgium");
         f2 = new Favourite("France");
         f3 = new Favourite("Sweden");
+        
+        r1 = new Role("user");
+        
+        u1.addRole(r1);
+        u2.addRole(r1);
+        u3.addRole(r1);
+        
         u1.addFavourite(f1);
         u1.addFavourite(f3);
         u2.addFavourite(f2);
@@ -93,6 +102,13 @@ public class UserFacadeTest {
         UserFacade result = UserFacade.getUserFacade(emf);
         assertNotEquals(expectedResult, result);
     }
+    
+    @Test
+    public void testGetAllUsers() {
+        int expectedCount = 3;
+        int actual = facade.getAllUsers().size();
+        assertEquals(expectedCount, actual);
+    }
 
     @Test
     public void testDeleteUser() throws NotFoundException {
@@ -105,13 +121,6 @@ public class UserFacadeTest {
 
         assertEquals(expectedCount, actualCount);
 
-    }
-
-    @Test
-    public void testGetAllUsers() {
-        int expectedCount = 3;
-        int actual = facade.getAllUsers().size();
-        assertEquals(expectedCount, actual);
     }
 
     @Test

@@ -134,8 +134,10 @@ public class UserFacade {
     
 public List<UserDTO> getAllUsers() {
         EntityManager em = emf.createEntityManager();
+
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u INNER JOIN u.roleList Role WHERE Role.roleName = :userType", User.class);
+            query.setParameter("userType", "user");
             List<User> users = query.getResultList();
             List<UserDTO> userDTOs = new ArrayList();
             users.forEach((User user) -> {
