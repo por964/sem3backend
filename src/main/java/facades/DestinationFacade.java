@@ -158,45 +158,24 @@ public class DestinationFacade {
 
         EntityManager em = emf.createEntityManager();
         
-        Favourite favourite = new Favourite(country);
-        
         try {
-                User user = em.find(User.class, userName);
+                
+                TypedQuery<Favourite> query = em.createQuery("SELECT f FROM Favourite f WHERE f.countryName = :country", Favourite.class);
+                query.setParameter("country", country);
+                Favourite favourite = query.getSingleResult();
+                             
+                User user = em.find(User.class, userName);            
                 
                 em.getTransaction().begin();
-                em.remove(user);
-                em.getTransaction().commit();
-                
                 user.removeFavourite(favourite);
-                
-                em.getTransaction().begin();
-                em.persist(user);
                 em.getTransaction().commit();
+                em.close();
 
                 
         } finally {
             em.close();
         }
-        
-        /*
-        //Find favourite in DB to retrieve ID:
-        Favourite favourite = em.find(Favourite.class, country);
-
-        //Retrieve ID from favourite:
-        int favouriteID = favourite.getId();
-
-        try {
-
-            em.getTransaction().begin();
-            Query query = em.createQuery("Delete from countries_users c where c.favourites_ID = :favouriteID");
-            query.setParameter("favouriteID", favouriteID);
-            query.executeUpdate();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        */
-                
+    
         return country;
     }
 

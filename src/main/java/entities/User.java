@@ -59,7 +59,7 @@ public class User implements Serializable {
     
     public void removeFavourite(Favourite favourite) {
         if (favourite != null) {
-            this.favourites.remove(favourite);
+            favourites.remove(favourite);
             favourite.getUsers().remove(this);
         }
     }
