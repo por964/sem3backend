@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -23,8 +24,8 @@ public class Favourite implements Serializable {
     private String countryName;
     
     @ManyToMany
-    private List<User> users;   
-    
+    @JoinColumn(name = "favourites")
+    private List<User> users;       
   
     public Favourite() {
     }

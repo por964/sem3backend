@@ -102,7 +102,13 @@ public class SetupTestUsers {
         /*
                 
                 //Favourite fav = em.find(Favourite.class, "denmark");
+<<<<<<< HEAD
                 
+=======
+
+                
+
+>>>>>>> 01705eaa8783ee5a6907e8ff242afddb551da7a4
                 
                 //Favourite favourite = new Favourite("denmark");
                 
