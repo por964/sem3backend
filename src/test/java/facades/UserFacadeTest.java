@@ -30,7 +30,7 @@ import utils.EMF_Creator;
  *
  * @author am
  */
-@Disabled
+//@Disabled
 public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -50,6 +50,15 @@ public class UserFacadeTest {
         facade = UserFacade.getUserFacade(emf);
         destiFacade = DestinationFacade.getDestinationFacade(emf);
 
+        
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("User.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Role.deleteAllRows").executeUpdate();
+            
         u1 = new User("user11", "test11");
         u2 = new User("user12", "test12");
         u3 = new User("user13", "test13");
@@ -68,12 +77,6 @@ public class UserFacadeTest {
         u1.addFavourite(f3);
         u2.addFavourite(f2);
         u3.addFavourite(f3);
-
-        EntityManager em = emf.createEntityManager();
-
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("User.deleteAllRows").executeUpdate();
 
             em.persist(u1);
             em.persist(u2);
@@ -112,7 +115,7 @@ public class UserFacadeTest {
 
     @Test
     public void testDeleteUser() throws NotFoundException {
-        int expectedCount = 2;
+        int expectedCount = 0;
 
         facade.deleteUser(u2.getUserName());
         List<UserDTO> allUsers = new ArrayList<>();

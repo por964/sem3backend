@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "roles")
-@NamedQuery(name = "User.deleteAllRows", query = "DELETE from User")
+@NamedQuery(name = "Role.deleteAllRows", query = "DELETE from Role")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class Role implements Serializable {
     @Column(name = "role_name", length = 20)
     private String roleName;
     
-    @ManyToMany(mappedBy = "roleList")
+    @ManyToMany(mappedBy = "roleList", cascade = {CascadeType.PERSIST})
     private List<User> userList;
 
     public Role() {
