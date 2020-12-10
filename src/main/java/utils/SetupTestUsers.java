@@ -8,16 +8,17 @@ import entities.UserInfo;
 import errorhandling.AlreadyExistsException;
 import errorhandling.MissingInputException;
 import facades.UserFacade;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 public class SetupTestUsers {
 
     public static void main(String[] args) throws MissingInputException, AlreadyExistsException {
 
-        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
-        EntityManager em = emf.createEntityManager();
+
 
         // IMPORTAAAAAAAAAANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // This breaks one of the MOST fundamental security rules in that it ships with default users and passwords
@@ -43,7 +44,9 @@ public class SetupTestUsers {
         //FACADE.addFavourite("greece", "user");
         //FACADE.addFavourite("ireland", "user");
         
-        
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
+        EntityManager em = emf.createEntityManager();
+                
         User user = new User("user", "test1");
         User admin = new User("admin", "test1");
         User both = new User("user_admin", "test1");
@@ -96,8 +99,33 @@ public class SetupTestUsers {
         System.out.println("Created TEST Users");
 
         //FACADE.addFavourite("Denmark", "user");
-        
+        /*
+                
+                //Favourite fav = em.find(Favourite.class, "denmark");
+<<<<<<< HEAD
+                
+=======
 
+                
+
+>>>>>>> 01705eaa8783ee5a6907e8ff242afddb551da7a4
+                
+                //Favourite favourite = new Favourite("denmark");
+                
+                TypedQuery<Favourite> query = em.createQuery("SELECT f FROM Favourite f WHERE f.countryName = :country", Favourite.class);
+                query.setParameter("country", "norway");
+                Favourite favourite = query.getSingleResult();
+                             
+                User user = em.find(User.class, "user4");
+                
+                //user.removeFavourite(favourite);                
+                
+                em.getTransaction().begin();
+                //user.getFavourites().remove(favourite);
+                user.removeFavourite(favourite);
+                em.getTransaction().commit();
+                em.close();
+*/
     }
 
 }
