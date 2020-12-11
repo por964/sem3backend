@@ -86,7 +86,8 @@ public class UserFacade {
 
         EntityManager em = emf.createEntityManager();
         
-        Role userRole = new Role("user");
+        //Role userRole = new Role("user");
+        Role userRole = em.find(Role.class, "user");
 
         if (userDTO.getUserName().length() == 0 || (userDTO.getUserPass().length() == 0)) {
             throw new MissingInputException("One or both values are missing");

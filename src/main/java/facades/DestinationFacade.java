@@ -169,8 +169,6 @@ public class DestinationFacade {
                 em.getTransaction().begin();
                 user.removeFavourite(favourite);
                 em.getTransaction().commit();
-                em.close();
-
                 
         } finally {
             em.close();
@@ -190,9 +188,22 @@ public class DestinationFacade {
         }
 
         String returnString = "";
-
+        
         Favourite favourite = new Favourite(lowerCountry);
+        
+        //Checks if favourite already exists in DB:
+        try {
+            
+        TypedQuery<Favourite> query = em.createQuery("SELECT f FROM Favourite f WHERE f.countryName = :country", Favourite.class);
+        query.setParameter("country", lowerCountry);
+        Favourite result = query.getSingleResult();
 
+        favourite = result;
+        
+        } catch (Exception e) {
+            System.out.println("Failed to find favourite in DB");
+        }
+        
         List<Favourite> usersFavorites = getFavorites(userName);
 
         //Sikrer at vi kun sammenligner CountryName og ikke ID'et/key'en:
@@ -206,7 +217,7 @@ public class DestinationFacade {
         } else {
 
             try {
-
+//
                 User user = em.find(User.class, userName);
 
                 user.addFavourite(favourite);

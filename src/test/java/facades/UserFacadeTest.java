@@ -31,7 +31,7 @@ import utils.EMF_Creator;
  *
  * @author am
  */
-//@Disabled
+@Disabled
 public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
