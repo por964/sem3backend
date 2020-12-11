@@ -62,9 +62,9 @@ public class LoginEndpointTest {
             em.createQuery("delete from Role").executeUpdate();
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
-            User user = new User("user", "test");
+            User user = new User("user2", "test");
             user.addRole(userRole);
-            User admin = new User("admin", "test");
+            User admin = new User("admin2", "test");
             admin.addRole(adminRole);
             User both = new User("user_admin", "test");
             both.addRole(userRole);
@@ -112,7 +112,7 @@ public class LoginEndpointTest {
     }
     @Test
     public void testRestForAdmin() {
-        login("admin", "test");
+        login("admin2", "test");
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
@@ -120,22 +120,22 @@ public class LoginEndpointTest {
                 .when()
                 .get("/user/admin").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to (admin) User: admin"));
+                .body("msg", equalTo("Hello to (admin) User: admin2"));
     }
     @Test
     public void testRestForUser() {
-        login("user", "test");
+        login("user2", "test");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
                 .get("/user/user").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to User: user"));
+                .body("msg", equalTo("Hello to User: user2"));
     }
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
-        login("user", "test");
+        login("user2", "test");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
@@ -145,7 +145,7 @@ public class LoginEndpointTest {
     }
     @Test
     public void testAutorizedAdminCannotAccesUserPage() {
-        login("admin", "test");
+        login("admin2", "test");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
